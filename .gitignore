@@ -1,0 +1,21 @@
+# Секреты: токен Telegram-бота и прочие настройки сервера
+.env
+.env.*
+!.env.example
+*.ini
+
+# Локальные настройки инструментов
+.claude/
+.vscode/
+.idea/
+
+# Системный мусор
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+
+# Архивы и временные файлы
+*.zip
+*.log
+*.tmp
