@@ -1,14 +1,47 @@
 <?php
 
-$BOT_TOKEN = '8893266920:AAEFv4hVSi4aEIH0UynfAPrZFRew4qajTXQ';
-$CHAT_ID   = '-5529838957';    // группа "Заявки"
-
 header('Content-Type: application/json; charset=utf-8');
 
 function fail($code, $msg) {
     http_response_code($code);
     echo json_encode(array('ok' => false, 'error' => $msg), JSON_UNESCAPED_UNICODE);
     exit;
+}
+
+// Секреты лежат не в репозитории, а в файле .env (он в .gitignore). Образец — .env.example.
+// Сначала ищем .env уровнем выше корня сайта (туда браузер не достанет), потом рядом с send.php.
+// Переменные окружения сервера, если заданы, важнее файла.
+function load_env() {
+    foreach (array(dirname(__DIR__) . '/.env', __DIR__ . '/.env') as $f) {
+        if (!is_file($f) || !is_readable($f)) continue;
+        $vars = array();
+        foreach (file($f, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+            $line = trim($line);
+            if ($line === '' || $line[0] === '#' || strpos($line, '=') === false) continue;
+            list($k, $v) = explode('=', $line, 2);
+            $k = trim($k);
+            $v = trim($v);
+            // снимаем кавычки: KEY="value" или KEY='value'
+            if (strlen($v) >= 2 && ($v[0] === '"' || $v[0] === "'") && substr($v, -1) === $v[0]) {
+                $v = substr($v, 1, -1);
+            }
+            $vars[$k] = $v;
+        }
+        return $vars;
+    }
+    return array();
+}
+$env = load_env();
+$envGet = function ($key) use ($env) {
+    $v = getenv($key);
+    if ($v !== false && $v !== '') return $v;
+    return isset($env[$key]) ? $env[$key] : '';
+};
+$BOT_TOKEN = $envGet('TELEGRAM_BOT_TOKEN');
+$CHAT_ID   = $envGet('TELEGRAM_CHAT_ID');
+if ($BOT_TOKEN === '' || $CHAT_ID === '') {
+    error_log('send.php: не заданы TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID (.env)');
+    fail(500, 'Сервер не настроен');
 }
 
 // Разрешаем только POST-запросы

@@ -1,0 +1,4 @@
+# Не отдавать браузеру файлы с секретами и настройками (.env, *.ini и т. п.)
+<FilesMatch "(^\.env.*|\.ini$|\.log$)">
+    Require all denied
+</FilesMatch>
