@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ONECODEX — разработка для digital- и IT-агентств</title>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112188634', 'ym');
+
+    ym(112188634, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112188634" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<meta name="description" content="Внешний production-партнёр для digital-агентств, IT-компаний и веб-студий. Сайты, backend, интеграции, GIS, PIM, CRM, маркетплейсы, Telegram-боты и автоматизация.">
+<meta name="theme-color" content="#09090b">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+:root{
+  --bg:#09090b;--bg2:#101014;--card:#141419;--line:#292930;--text:#f4f4f5;
+  --muted:#9b9ba5;--accent:#b8ff4d;--accent2:#7c5cff;--white:#fff;
+  --max:1180px;--radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button,input,textarea{font:inherit}
+.container{width:min(var(--max),calc(100% - 40px));margin:auto}
+.topline{height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),transparent)}
+header{position:fixed;z-index:20;top:3px;left:0;right:0;border-bottom:1px solid transparent;transition:.3s}
+header.scrolled{background:rgba(9,9,11,.86);backdrop-filter:blur(18px);border-color:var(--line)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:900;letter-spacing:-.08em;font-size:25px}.logo i{color:var(--accent);font-style:normal}
+.navlinks{display:flex;gap:30px;align-items:center;font-size:14px;color:#c9c9cf}
+.navlinks a:hover{color:#fff}
+.cta-small{border:1px solid #45454d;padding:11px 16px;border-radius:999px;color:#fff}
+.cta-small:hover{border-color:var(--accent);color:var(--accent)}
+.burger{display:none;background:none;border:0;color:#fff;font-size:25px}
+.hero{min-height:860px;padding:170px 0 90px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:650px;height:650px;right:-260px;top:100px;background:radial-gradient(circle,rgba(124,92,255,.25),transparent 65%);pointer-events:none}
+.hero:after{content:"";position:absolute;width:500px;height:500px;left:-300px;bottom:-220px;background:radial-gradient(circle,rgba(184,255,77,.11),transparent 68%);pointer-events:none}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--accent);font-size:12px;text-transform:uppercase;letter-spacing:.15em;font-weight:800}
+.eyebrow:before{content:"";width:28px;height:1px;background:var(--accent)}
+h1{font-size:clamp(54px,8vw,104px);line-height:.92;letter-spacing:-.075em;max-width:1050px;margin:25px 0 32px}
+h1 span{color:var(--accent)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:end}
+.lead{font-size:20px;line-height:1.55;color:#c3c3c9;max-width:690px}
+.buttons{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:15px 21px;border-radius:12px;font-weight:750;border:1px solid var(--line)}
+.btn-primary{background:var(--accent);color:#0a0a0b;border-color:var(--accent)}
+.btn-primary:hover{filter:brightness(1.07)}
+.btn-secondary:hover{border-color:#666}
+.hero-card{border:1px solid var(--line);background:rgba(20,20,25,.72);border-radius:var(--radius);padding:26px;box-shadow:0 30px 100px rgba(0,0,0,.35)}
+.terminal{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;color:#a8a8b0}
+.terminal .ok{color:var(--accent)}.terminal .violet{color:#a99aff}
+.term-row{padding:8px 0;border-bottom:1px solid #24242a}.term-row:last-child{border:0}
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;color:#707079;font-size:12px;letter-spacing:.16em;font-weight:800}
+.marquee-inner{display:flex;gap:34px;padding:18px 0;min-width:max-content}
+.marquee b{color:#d8d8dc}
+section{padding:115px 0}
+.section-dark{background:#0d0d10}
+.section-head{display:flex;justify-content:space-between;gap:50px;align-items:end;margin-bottom:55px}
+.kicker{color:var(--muted);text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800}
+h2{font-size:clamp(40px,5vw,66px);line-height:.98;letter-spacing:-.06em;margin:12px 0 0;max-width:760px}
+.section-note{max-width:360px;color:var(--muted);font-size:15px}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.service{display:block;background:var(--card);padding:30px;min-height:245px;transition:.25s}
+.service:hover{background:#19191f}
+.num{font-family:monospace;color:#666;font-size:12px}
+.service h3{font-size:23px;letter-spacing:-.035em;margin:48px 0 10px}
+.service p{margin:0;color:var(--muted);font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.tag{border:1px solid #303038;border-radius:999px;padding:5px 9px;font-size:11px;color:#aaa}
+.capabilities{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.cap{border:1px solid var(--line);border-radius:20px;padding:27px;background:#0f0f13}
+.cap strong{display:block;font-size:18px;margin-bottom:9px}.cap p{margin:0;color:var(--muted);font-size:14px}
+.workflow{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.step{padding:30px 25px 35px;border-right:1px solid var(--line);min-height:260px}.step:last-child{border:0}
+.stepnum{font:12px monospace;color:var(--accent)}
+.step h3{font-size:22px;margin:45px 0 10px}.step p{color:var(--muted);font-size:14px;margin:0}
+.agency{background:#f1f1ee;color:#101012}
+.agency .kicker{color:#666}.agency h2{color:#111}
+.agency-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.agency-list{list-style:none;padding:0;margin:0}
+.agency-list li{padding:18px 0;border-bottom:1px solid #d3d3ce;font-size:18px;display:flex;gap:15px}
+.agency-list li:before{content:"↗";font-weight:800}
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.case{display:block;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:var(--card);transition:.25s}
+.case:hover{border-color:#3a3a42}
+.case-visual{height:290px;background:linear-gradient(135deg,#17171d,#282830);display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:900;letter-spacing:-.06em;color:#555}
+.case-body{padding:25px}.case-type{color:var(--accent);font:11px monospace;text-transform:uppercase;letter-spacing:.12em}.case h3{font-size:30px;margin:9px 0}.case p{color:var(--muted);margin:0}
+.cta{padding:125px 0;background:linear-gradient(135deg,#171719,#0b0b0e);position:relative;overflow:hidden}
+.cta h2{max-width:850px}.cta p{color:var(--muted);font-size:18px;max-width:620px}
+.contact{background:#0d0d10}
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px}
+.contact-info{color:var(--muted);max-width:430px}
+.contact-links{margin-top:35px;display:grid;gap:14px}.contact-links a{font-size:19px}.contact-links a:hover{color:var(--accent)}
+form{border:1px solid var(--line);border-radius:24px;padding:30px;background:#111116}
+label{display:block;color:#aaa;font-size:12px;margin-bottom:7px}
+label .req{color:var(--accent)}
+input,textarea{width:100%;border:1px solid #303038;background:#0b0b0f;color:#fff;border-radius:11px;padding:14px 15px;outline:none}
+input::placeholder,textarea::placeholder{color:#5a5a63}
+input:focus,textarea:focus{border-color:#666}
+textarea{min-height:130px;resize:vertical}
+.field{margin-bottom:18px}
+.hint{font-size:11px;color:#6f6f79;margin-top:7px}
+.err{display:none;font-size:12px;color:#ff7a6b;margin-top:7px;align-items:center;gap:6px}
+.err:before{content:"⚠"}
+.field.invalid input,.field.invalid textarea{border-color:#c0392b;background:#140c0c}
+.field.invalid input:focus,.field.invalid textarea:focus{border-color:#ff7a6b}
+.field.invalid .err{display:flex}
+.field.invalid .hint{display:none}
+.field.valid input,.field.valid textarea{border-color:#3d5c33}
+.choice{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.choice input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.choice label{display:flex;align-items:center;justify-content:center;margin:0;cursor:pointer;border:1px solid #303038;
+  background:#0b0b0f;color:#c9c9cf;border-radius:11px;padding:13px 10px;font-size:14px;transition:.18s;user-select:none}
+.choice label:hover{border-color:#4a4a55;color:#fff}
+.choice input:checked+label{border-color:var(--accent);background:rgba(184,255,77,.09);color:var(--accent);font-weight:650}
+.choice input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+.consent{display:flex;gap:9px;align-items:flex-start;color:#777;font-size:11px;margin-bottom:18px}.consent input{width:auto;margin:2px 0}
+.consent.invalid{color:#ff7a6b}.consent.invalid input{outline:1px solid #c0392b;outline-offset:2px}
+.consent a{color:#a9a9b4;text-decoration:underline;text-underline-offset:2px}
+.consent a:hover{color:var(--accent)}
+.hp{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden}
+.formnote{font-size:13px;margin-top:14px;color:#999;display:none}
+.formnote.show{display:block}
+.formnote.error{color:#ff7a6b}
+.formnote.error a{color:var(--accent);text-decoration:underline}
+.form-success{display:none;text-align:center;padding:26px 6px}
+.form-success .tick{width:56px;height:56px;border-radius:999px;background:rgba(184,255,77,.12);border:1px solid var(--accent);
+  color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 20px}
+.form-success h3{font-size:24px;letter-spacing:-.03em;margin:0 0 10px}
+.form-success p{color:var(--muted);margin:0 0 22px;font-size:15px}
+.form-success .again{background:none;border:1px solid #45454d;color:#c9c9cf;padding:11px 18px;border-radius:999px;cursor:pointer}
+.form-success .again:hover{border-color:var(--accent);color:var(--accent)}
+form.sent .form-body{display:none}
+form.sent .form-success{display:block}
+@media(max-width:420px){.choice{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding:25px 0;color:#666;font-size:12px}
+.footer{display:flex;justify-content:space-between;gap:20px}.footer a:hover{color:#fff}
+@media(max-width:850px){
+ .container{width:min(var(--max),calc(100% - 28px))}
+ .navlinks{display:none}.burger{display:block}
+ .hero{min-height:auto;padding:140px 0 70px}.hero-grid{grid-template-columns:1fr;gap:40px}
+ h1{font-size:clamp(51px,15vw,82px)}
+ .services{grid-template-columns:1fr}.service{min-height:190px}.service h3{margin-top:28px}
+ .section-head,.agency-grid,.contact-grid{grid-template-columns:1fr;display:grid;gap:20px}
+ .capabilities,.case-grid{grid-template-columns:1fr}
+ .workflow{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line);min-height:0}
+ .agency{padding:85px 0}.section-note{max-width:none}
+}
+</style>
+</head>
+<body>
+<div class="topline"></div>
+<header id="header"><div class="container nav">
+  <a class="logo" href="#">ONE<i>X</i></a>
+  <nav class="navlinks">
+    <a href="#services">Услуги</a><a href="#cases">Опыт</a><a href="#process">Процесс</a><a href="#contact" class="cta-small">Передать задачу →</a>
+  </nav>
+  <button class="burger" onclick="document.querySelector('.navlinks').classList.toggle('open')">☰</button>
+</div></header>
+
+<main>
+<section class="hero">
+ <div class="container">
+  <div class="eyebrow">ONECODEX / Внешний production для агентств</div>
+  <h1>Разработка, которую можно <span>передать</span> нам.</h1>
+  <div class="hero-grid">
+   <div>
+    <p class="lead">ONECODEX — технический подрядчик для digital- и IT-агентств, веб-студий и команд разработки. Забираем часть проекта или весь production: от прототипа и дизайна до backend, интеграций и запуска.</p>
+    <div class="buttons"><a class="btn btn-primary" href="#contact">Передать задачу →</a><a class="btn btn-secondary" href="#services">Что можем закрыть</a></div>
+   </div>
+   <div class="hero-card">
+    <div class="terminal">
+      <div class="term-row"><span class="violet">$</span> project.assign(<b>onecodex</b>)</div>
+      <div class="term-row">scope = <span class="ok">"frontend + backend"</span></div>
+      <div class="term-row">client_contact = <span class="ok">"agency"</span></div>
+      <div class="term-row">delivery = <span class="ok">"white_label"</span></div>
+      <div class="term-row">status = <span class="ok">"ready_to_ship"</span></div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<div class="marquee"><div class="container marquee-inner">
+ <b>WEB</b><span>///</span><b>PYTHON</b><span>///</span><b>API</b><span>///</span><b>CRM</b><span>///</span><b>PIM</b><span>///</span><b>GIS</b><span>///</span><b>MARKETPLACES</b><span>///</span><b>TELEGRAM</b><span>///</span><b>AUTOMATION</b><span>///</span>
+</div></div>
+
+<section id="services" class="section-dark">
+ <div class="container">
+  <div class="section-head"><div><div class="kicker">01 / Компетенции</div><h2>Закрываем техническую часть проекта</h2></div><p class="section-note">Можно отдать нам отдельный этап, узкую задачу или весь production. Формат работы подстраиваем под процессы агентства.</p></div>
+  <div class="services">
+   <a class="service" href="service-sites.html"><span class="num">01</span><h3>Сайты с нуля</h3><p>От сбора требований, структуры, прототипирования и дизайна до frontend, backend, тестирования и запуска.</p><div class="tags"><span class="tag">Figma</span><span class="tag">Frontend</span><span class="tag">Backend</span></div></a>
+   <a class="service" href="service-razvitie.html"><span class="num">02</span><h3>Развитие сайтов</h3><p>Доработка, рефакторинг, новые разделы, личные кабинеты, оптимизация и сопровождение существующих проектов.</p><div class="tags"><span class="tag">Audit</span><span class="tag">Refactor</span><span class="tag">Support</span></div></a>
+   <a class="service" href="service-integracii.html"><span class="num">03</span><h3>Интеграции</h3><p>Связываем сайт и внутренние системы: API, базы данных, внешние сервисы и собственные backend-модули.</p><div class="tags"><span class="tag">REST API</span><span class="tag">Python</span><span class="tag">Webhooks</span></div></a>
+   <a class="service" href="service-crm.html"><span class="num">04</span><h3>CRM и платежи</h3><p>Интеграции с CRM, платёжными системами, обработка заказов, статусов, оплат и уведомлений.</p><div class="tags"><span class="tag">CRM</span><span class="tag">Payments</span><span class="tag">API</span></div></a>
+   <a class="service" href="service-pim.html"><span class="num">05</span><h3>PIM и каталоги</h3><p>Интеграции с PIM, разработка собственных систем управления товарными данными и каталогами.</p><div class="tags"><span class="tag">PIM</span><span class="tag">Catalog</span><span class="tag">Import</span></div></a>
+   <a class="service" href="service-gis.html"><span class="num">06</span><h3>GIS / WebGIS</h3><p>Геоинформационные системы, картографические интерфейсы и специализированные веб-инструменты.</p><div class="tags"><span class="tag">GIS</span><span class="tag">WebGIS</span><span class="tag">Maps</span></div></a>
+   <a class="service" href="service-marketplaces.html"><span class="num">07</span><h3>Маркетплейсы</h3><p>Интеграции с маркетплейсами, автоматизация создания и обновления товаров, цен и остатков.</p><div class="tags"><span class="tag">Ozon</span><span class="tag">WB</span><span class="tag">Automation</span></div></a>
+   <a class="service" href="service-telegram-boty.html"><span class="num">08</span><h3>Telegram-боты</h3><p>Боты, уведомления, рабочие сценарии, интеграции с CRM, сайтами, API и внутренними системами.</p><div class="tags"><span class="tag">Telegram</span><span class="tag">Bot API</span><span class="tag">Python</span></div></a>
+   <a class="service" href="service-avtomatizaciya.html"><span class="num">09</span><h3>Автоматизация</h3><p>Расчёт цен, базы поставщиков, синхронизация данных, мониторинг API и другие повторяющиеся процессы.</p><div class="tags"><span class="tag">Automation</span><span class="tag">Monitoring</span><span class="tag">ETL</span></div></a>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="container">
+  <div class="section-head"><div><div class="kicker">02 / Формат участия</div><h2>Подключаемся там, где вам не хватает рук</h2></div></div>
+  <div class="capabilities">
+   <div class="cap"><strong>Весь сайт</strong><p>Берём проект целиком: требования → структура → прототип → дизайн → разработка → тестирование → запуск.</p></div>
+   <div class="cap"><strong>Только разработка</strong><p>У вас уже есть дизайн и ТЗ — забираем frontend, backend, интеграции и техническую реализацию.</p></div>
+   <div class="cap"><strong>Отдельный блок</strong><p>Например, CRM, PIM, платёжный шлюз, GIS-модуль, Telegram-бот или интеграция с API.</p></div>
+   <div class="cap"><strong>Доработка legacy</strong><p>Разбираемся с существующим кодом, исправляем проблемы, рефакторим и постепенно развиваем продукт.</p></div>
+ </div>
+ </div>
+</section>
+
+<section id="cases" class="section-dark">
+ <div class="container">
+  <div class="section-head"><div><div class="kicker">03 / Реальный опыт</div><h2>Не обещаем «умеем всё». Показываем то, что уже делали.</h2></div></div>
+  <div class="case-grid">
+   <a class="case" href="case-stilspace.html"><div class="case-visual">WEBGIS</div><div class="case-body"><span class="case-type">GIS-портал</span><h3>StilSpace</h3><p>WebGIS-инструмент для работы со снимками земли из космоса. В исходном проекте использованы OpenLayers и React.</p></div></a>
+   <a class="case" href="case-potolki72.html"><div class="case-visual">5 DAYS</div><div class="case-body"><span class="case-type">Сайт</span><h3>potolki72</h3><p>Сайт-визитка для компании натяжных потолков. От приёма заказа до запущенного сайта — 5 дней.</p></div></a>
+  </div>
+ </div>
+</section>
+
+<section id="process">
+ <div class="container">
+  <div class="section-head"><div><div class="kicker">04 / Как работаем</div><h2>Просто встроиться в вашу команду</h2></div><p class="section-note">Не заставляем агентство перестраивать процесс под подрядчика.</p></div>
+  <div class="workflow">
+   <div class="step"><span class="stepnum">01</span><h3>Задача</h3><p>Получаем ТЗ, Figma, ссылку на текущий проект или просто описание проблемы.</p></div>
+   <div class="step"><span class="stepnum">02</span><h3>Оценка</h3><p>Быстро разбираемся в объёме, предлагаем вариант реализации, срок и стоимость.</p></div>
+   <div class="step"><span class="stepnum">03</span><h3>Production</h3><p>Работаем в вашем трекере и удобном для команды формате. Можно white label.</p></div>
+   <div class="step"><span class="stepnum">04</span><h3>Результат</h3><p>Передаём готовый код, документацию, доступы и результат, который можно отдавать клиенту.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="agency">
+ <div class="container agency-grid">
+  <div><div class="kicker">05 / Для агентства</div><h2>Вы продаёте. Мы производим.</h2><p style="color:#555;font-size:17px;max-width:550px">Вы сохраняете отношения с клиентом и управляете проектом. Мы становимся вашим техническим ресурсом — без прямой коммуникации с клиентом, если так удобнее.</p></div>
+  <ul class="agency-list"><li>Можно подключить на один проект</li><li>Можно отдавать отдельные технические задачи</li><li>Можно работать под брендом агентства</li><li>Можно масштабировать объём по мере роста проектов</li><li>Можно начать с небольшой тестовой задачи</li></ul>
+ </div>
+</section>
+
+<section class="cta">
+ <div class="container"><div class="kicker">06 / Нужен подрядчик</div><h2>Есть проект, который некому разработать?</h2><p>Пришлите ссылку, Figma, ТЗ или просто несколько предложений о задаче. Посмотрим объём и скажем, чем можем помочь.</p><a class="btn btn-primary" href="#contact">Обсудить задачу →</a></div>
+</section>
+
+<section id="contact" class="contact">
+ <div class="container contact-grid">
+  <div><div class="kicker">07 / Контакты</div><h2>Давайте начнём с одной задачи.</h2><p class="contact-info">Не нужен большой бриф. Расскажите, что нужно сделать, на каком этапе проект и когда нужен результат.</p>
+   <div class="contact-links"><a href="mailto:hello@onecodex.ru">hello@onecodex.ru</a><a href="tel:+79953890192">+7 995 389-01-92</a><a href="https://t.me/chvanov_ivan" target="_blank" rel="noopener">@chvanov_ivan в Telegram ↗</a></div>
+  </div>
+  <form id="contactForm" novalidate>
+   <div class="form-body">
+
+    <div class="field" id="f-name">
+     <label for="name">Имя или компания <span class="req">*</span></label>
+     <input id="name" name="name" required autocomplete="organization" placeholder="Например: Александр / ООО «Ромашка»">
+     <div class="err" id="e-name">Укажите имя или название компании</div>
+    </div>
+
+    <div class="field" id="f-method">
+     <label>Как с вами связаться? <span class="req">*</span></label>
+     <div class="choice" role="radiogroup" aria-label="Способ связи">
+      <input type="radio" id="m-tg" name="contact_method" value="telegram" checked><label for="m-tg">Telegram</label>
+      <input type="radio" id="m-email" name="contact_method" value="email"><label for="m-email">Email</label>
+      <input type="radio" id="m-phone" name="contact_method" value="phone"><label for="m-phone">Телефон</label>
+     </div>
+    </div>
+
+    <div class="field" id="f-contact">
+     <label for="contact-value">Ваш контакт <span class="req">*</span></label>
+     <input id="contact-value" name="contact" required inputmode="text" placeholder="@username">
+     <div class="hint" id="h-contact">Например: @chvanov_ivan</div>
+     <div class="err" id="e-contact">Укажите контакт для связи</div>
+    </div>
+
+    <div class="field" id="f-message">
+     <label for="message">Что нужно сделать? <span class="req">*</span></label>
+     <textarea id="message" name="message" required placeholder="Коротко опишите задачу, пришлите ссылку или расскажите, что уже есть"></textarea>
+     <div class="err" id="e-message">Коротко опишите задачу — хотя бы одним предложением</div>
+    </div>
+
+    <div class="consent" id="f-consent"><input id="consent" type="checkbox" name="consent" value="1" required><span>Согласен на обработку персональных данных в соответствии с <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</span></div>
+
+    <!-- honeypot: скрытое поле для ботов, реальные пользователи его не видят -->
+    <div aria-hidden="true" class="hp">
+     <label for="website">Не заполняйте это поле</label>
+     <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+    </div>
+
+    <button class="btn btn-primary" style="width:100%;cursor:pointer" type="submit" id="submit">Отправить задачу →</button>
+    <div class="formnote" id="status"></div>
+   </div>
+
+   <div class="form-success" role="status" aria-live="polite">
+    <div class="tick">✓</div>
+    <h3>Заявка отправлена</h3>
+    <p>Спасибо! Свяжемся с вами в течение рабочего дня.</p>
+    <button type="button" class="again" id="againBtn">Отправить ещё одну задачу</button>
+   </div>
+  </form>
+ </div>
+</section>
+</main>
+
+<footer><div class="container footer"><span>© <span id="year"></span> ONECODEX</span><a href="privacy.html">Политика конфиденциальности</a><a href="https://onecodex.ru/" target="_blank" rel="noopener">onecodex.ru</a></div></footer>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+const header=document.getElementById('header');
+addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>20),{passive:true});
+const form=document.getElementById('contactForm'), status=document.getElementById('status'), submit=document.getElementById('submit');
+const contact=document.getElementById('contact-value'), hintContact=document.getElementById('h-contact');
+const nameInput=document.getElementById('name'), msgInput=document.getElementById('message');
+// Yandex.Metrika goals
+if (typeof ym === 'function') {
+  document.querySelectorAll('a[href^="tel:"]').forEach(a => a.addEventListener('click', () => ym(112188634, 'reachGoal', 'phone_click')));
+  document.querySelectorAll('a[href*="t.me/"]').forEach(a => a.addEventListener('click', () => ym(112188634, 'reachGoal', 'telegram_click')));
+  document.querySelectorAll('a[href^="service-"]').forEach(a => a.addEventListener('click', () => ym(112188634, 'reachGoal', 'service_click')));
+}
+
+/* ---------- Настройки поля «Ваш контакт» ---------- */
+const METHODS={
+  telegram:{placeholder:'@username',   hint:'Например: @chvanov_ivan',      inputmode:'text',  autocomplete:'off',   label:'Telegram'},
+  email:   {placeholder:'name@company.ru', hint:'Например: ivan@romashka.ru', inputmode:'email', autocomplete:'email', label:'Email'},
+  phone:   {placeholder:'+7 (900) 123-45-67', hint:'Например: +7 (900) 123-45-67', inputmode:'tel', autocomplete:'tel', label:'Телефон'}
+};
+const method=()=>form.querySelector('input[name="contact_method"]:checked').value;
+
+function applyMethod(keepValue){
+  const m=METHODS[method()];
+  contact.placeholder=m.placeholder;
+  hintContact.textContent=m.hint;
+  contact.setAttribute('inputmode',m.inputmode);
+  contact.setAttribute('autocomplete',m.autocomplete);
+  if(!keepValue) contact.value='';
+  clear('f-contact');
+}
+form.querySelectorAll('input[name="contact_method"]').forEach(r=>{
+  r.addEventListener('change',()=>{applyMethod(false);contact.focus();});
+});
+applyMethod(true);
+
+/* ---------- Валидация ---------- */
+function setErr(id,msg){
+  const f=document.getElementById(id);
+  f.classList.remove('valid');f.classList.add('invalid');
+  const e=f.querySelector('.err'); if(e&&msg) e.textContent=msg;
+}
+function setOk(id){const f=document.getElementById(id);f.classList.remove('invalid');f.classList.add('valid');}
+function clear(id){const f=document.getElementById(id);f.classList.remove('invalid','valid');}
+
+const RE={
+  tg:/^@[a-zA-Z0-9_]{4,32}$/,
+  email:/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/,
+  phoneDigits:/^\+?\d{10,15}$/
+};
+
+/* Телефон: маска +7 (900) 123-45-67 */
+function formatPhone(v){
+  let d=v.replace(/\D/g,'');
+  if(d.startsWith('8')) d='7'+d.slice(1);
+  if(!d.startsWith('7')&&d.length) d='7'+d;
+  d=d.slice(0,11);
+  if(d.length<=1) return d?'+7':'';
+  let out='+7';
+  if(d.length>1) out+=' ('+d.slice(1,4);
+  if(d.length>=5) out+=') '+d.slice(4,7);
+  if(d.length>=8) out+='-'+d.slice(7,9);
+  if(d.length>=10) out+='-'+d.slice(9,11);
+  return out;
+}
+
+/* Каждый валидатор принимает два флага:
+   report      — показывать ли сообщение об ошибке;
+   requireFill — считать ли пустое поле ошибкой.
+   Пустое поле ругается только при отправке: уход из нетронутого поля
+   (например, после переключения способа связи) ошибку не показывает. */
+function validateName(report,requireFill){
+  const v=nameInput.value.trim();
+  if(!v) { if(!requireFill){ clear('f-name'); return false }   // нетронутое поле: не ошибка и не «ок»
+           if(report) setErr('f-name','Укажите имя или название компании'); return false }
+  if(v.length<2){ if(report) setErr('f-name','Укажите имя или название компании'); return false }
+  setOk('f-name');return true;
+}
+
+function validateMessage(report,requireFill){
+  const v=msgInput.value.trim();
+  if(!v) { if(!requireFill){ clear('f-message'); return false }
+           if(report) setErr('f-message','Опишите задачу — хотя бы одним предложением'); return false }
+  if(v.length<10){ if(report) setErr('f-message','Опишите задачу чуть подробнее — хотя бы одним предложением'); return false }
+  setOk('f-message');return true;
+}
+
+function validateContact(report,requireFill){
+  const m=method(); let v=contact.value.trim();
+  // для телефона «+7» от маски — это ещё пустое поле, а не начало ввода
+  const isEmpty = v==='' || (m==='phone' && v.replace(/\D/g,'').length<=1);
+  if(isEmpty){
+    if(!requireFill){ clear('f-contact'); return false }
+    if(report) setErr('f-contact','Укажите контакт для связи');
+    return false;
+  }
+  if(m==='telegram'){
+    v=v.replace(/^(https?:\/\/)?(t\.me\/|telegram\.me\/)/i,'').replace(/^@+/,'');
+    v='@'+v;
+    if(!RE.tg.test(v)){ if(report) setErr('f-contact','Укажите Telegram в формате @username'); return false }
+    contact.value=v;
+  }
+  if(m==='email'){
+    v=v.replace(/\s+/g,'');
+    if(!RE.email.test(v)){ if(report) setErr('f-contact','Проверьте адрес электронной почты'); return false }
+    contact.value=v;
+  }
+  if(m==='phone'){
+    const d=v.replace(/[^\d+]/g,'');
+    if(!RE.phoneDigits.test(d)){ if(report) setErr('f-contact','Укажите телефон в формате +7 (900) 123-45-67'); return false }
+    contact.value=formatPhone(v)||v;
+  }
+  setOk('f-contact');return true;
+}
+
+function validateConsent(report){
+  const ok=document.getElementById('consent').checked;
+  document.getElementById('f-consent').classList.toggle('invalid',!ok&&report);
+  return ok;
+}
+
+/* Уход из поля: проверяем только то, что человек реально заполнил.
+   Ошибку снимаем сразу, как только её исправили. */
+nameInput.addEventListener('blur',()=>validateName(true,false));
+msgInput.addEventListener('blur',()=>validateMessage(true,false));
+contact.addEventListener('blur',()=>validateContact(true,false));
+nameInput.addEventListener('input',()=>{if(document.getElementById('f-name').classList.contains('invalid'))validateName(false,false)});
+msgInput.addEventListener('input',()=>{if(document.getElementById('f-message').classList.contains('invalid'))validateMessage(false,false)});
+contact.addEventListener('input',()=>{
+  if(method()==='phone'){
+    const pos=contact.selectionStart===contact.value.length;
+    contact.value=formatPhone(contact.value);
+    if(pos) contact.setSelectionRange(contact.value.length,contact.value.length);
+  }
+  if(document.getElementById('f-contact').classList.contains('invalid'))validateContact(false,false);
+});
+document.getElementById('consent').addEventListener('change',()=>validateConsent(true));
+
+/* ---------- Отправка ---------- */
+function note(msg,isError){
+  status.textContent=msg;
+  status.classList.toggle('error',!!isError);
+  status.classList.toggle('show',!!msg);
+}
+
+form.addEventListener('submit',async e=>{
+ e.preventDefault(); note('');
+ const checks=[validateName(true,true),validateContact(true,true),validateMessage(true,true),validateConsent(true)];
+ if(checks.includes(false)){
+   const bad=form.querySelector('.field.invalid input, .field.invalid textarea')||document.getElementById('consent');
+   if(bad){bad.focus({preventScroll:true});bad.scrollIntoView({block:'center',behavior:'smooth'});}
+   return;
+ }
+ submit.disabled=true;submit.textContent='Отправляем…';
+ try{
+   const data=new FormData(form);
+   data.append('page',location.href);
+   const r=await fetch('send.php',{method:'POST',body:data});
+   let j={}; try{ j=await r.json() }catch(_){}
+   if(!r.ok||!j.ok){
+     const e=new Error('server');
+     // 4xx — это ответ сервера о данных формы, его текст показываем как есть
+     if(r.status>=400&&r.status<500&&j.error) e.userMessage=j.error;
+     throw e;
+   }
+   form.classList.add('sent');
+   form.querySelector('.form-success').scrollIntoView({block:'center',behavior:'smooth'});
+   if (typeof ym === 'function') ym(112188634, 'reachGoal', 'form_submit');
+ }catch(err){
+   if(err&&err.userMessage){
+     note(err.userMessage,true);
+   }else{
+     note('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в Telegram: ',true);
+     const a=document.createElement('a');
+     a.href='https://t.me/chvanov_ivan';a.target='_blank';a.rel='noopener';a.textContent='@chvanov_ivan';
+     status.appendChild(a);
+   }
+ }
+ submit.disabled=false;submit.textContent='Отправить задачу →';
+});
+
+document.getElementById('againBtn').addEventListener('click',()=>{
+  form.reset();
+  form.classList.remove('sent');
+  ['f-name','f-contact','f-message'].forEach(clear);
+  document.getElementById('f-consent').classList.remove('invalid');
+  note('');
+  applyMethod(false);
+  nameInput.focus();
+});
+</script>
+</body>
+</html>
