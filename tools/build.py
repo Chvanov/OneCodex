@@ -321,7 +321,7 @@ HEAD_TMPL = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<meta name="theme-color" content="#09090b">
+<meta name="theme-color" content="#f5f5f7">
 <link rel="canonical" href="https://onecodex.ru/{file}">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="ru_RU">
@@ -422,6 +422,10 @@ def case_page(c):
     (ROOT / file).write_text(head + body, encoding="utf-8")
 
 
+# Архивные страницы: не пересобираем, это снимок до редизайна
+FROZEN = {"index_old.html"}
+
+
 def fill(text, name, content):
     pat = re.compile(rf"<!--{name}-->.*?<!--/{name}-->", re.S)
     if not pat.search(text):
@@ -433,6 +437,8 @@ def main():
     for c in CASES:
         case_page(c)
     for path in sorted(ROOT.glob("*.html")):
+        if path.name in FROZEN:
+            continue
         t = path.read_text(encoding="utf-8")
         on_index = path.name == "index.html"
         t = fill(t, "header", header(on_index))
