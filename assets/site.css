@@ -367,3 +367,76 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px;color:var(--muted);f
  .to-top span:last-child{display:none}
 }
 @media(max-width:420px){.logo{font-size:19px}.head-phone .ph-text{display:none}.head-phone{width:36px;padding:0;justify-content:center}.exp-list{grid-template-columns:1fr}.hero-facts{grid-template-columns:1fr}}
+
+/* ---------- Fallback блок для формы ---------- */
+.form-fallback{
+  display:none;
+  background:rgba(0,0,0,.04);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px 22px;
+  margin-top:16px;
+  font-size:15px;
+}
+.form-fallback.show{display:block}
+.form-fallback h4{
+  margin:0 0 10px;
+  font-size:16px;
+  font-weight:600;
+}
+.form-fallback .fb-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:10px 0 0;
+}
+.form-fallback .fb-links a{
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:500;
+  font-size:15px;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.form-fallback .fb-links .fb-mailto{
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--ink);
+}
+.form-fallback .fb-links .fb-telegram{
+  background:#fff;
+  border:1px solid var(--accent);
+  color:var(--accent);
+}
+.form-fallback .fb-copy{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+}
+.form-fallback .fb-copy:hover{opacity:.9}
+.form-fallback .fb-feedback{
+  margin-top:10px;
+  font-size:14px;
+  color:var(--muted);
+}
+.form-fallback .fb-btn-copy{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  color:var(--ink);
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+}
+.form-fallback .fb-btn-copy:hover{border-color:var(--accent)}
+.form-fallback .fb-copied{
+  color:var(--accent);
+  font-weight:500;
+  margin-left:6px;
+}
