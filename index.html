@@ -477,58 +477,19 @@ contact.addEventListener('input',()=>{
 });
 document.getElementById('consent').addEventListener('change',()=>validateConsent(true));
 
-/* ---------- Отправка ---------- */
-function note(msg,isError){
-  status.textContent=msg;
-  status.classList.toggle('error',!!isError);
-  status.classList.toggle('show',!!msg);
+// Инициализация формы — вызываем обработчик из site.js
+var contactForm = document.getElementById('contactForm');
+var formStatus = document.getElementById('status');
+var formSubmit = document.getElementById('submit');
+
+if (contactForm && formStatus && formSubmit) {
+  contactForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (typeof processFormSubmission === 'function') {
+      processFormSubmission(contactForm, formStatus, formSubmit);
+    }
+  });
 }
-
-form.addEventListener('submit',async e=>{
- e.preventDefault(); note('');
- const checks=[validateName(true,true),validateContact(true,true),validateMessage(true,true),validateConsent(true)];
- if(checks.includes(false)){
-   const bad=form.querySelector('.field.invalid input, .field.invalid textarea')||document.getElementById('consent');
-   if(bad){bad.focus({preventScroll:true});bad.scrollIntoView({block:'center',behavior:'smooth'});}
-   return;
- }
- submit.disabled=true;submit.textContent='Отправляем…';
- try{
-   const data=new FormData(form);
-   data.append('page',location.href);
-   const r=await fetch('send.php',{method:'POST',body:data});
-   let j={}; try{ j=await r.json() }catch(_){}
-   if(!r.ok||!j.ok){
-     const e=new Error('server');
-     // 4xx — это ответ сервера о данных формы, его текст показываем как есть
-     if(r.status>=400&&r.status<500&&j.error) e.userMessage=j.error;
-     throw e;
-   }
-   form.classList.add('sent');
-   form.querySelector('.form-success').scrollIntoView({block:'center',behavior:'smooth'});
-   if (typeof ym === 'function') ym(112188634, 'reachGoal', 'form_submit');
- }catch(err){
-   if(err&&err.userMessage){
-     note(err.userMessage,true);
-   }else{
-     note('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в Telegram: ',true);
-     const a=document.createElement('a');
-     a.href='https://t.me/chvanov_ivan';a.target='_blank';a.rel='noopener';a.textContent='@chvanov_ivan';
-     status.appendChild(a);
-   }
- }
- submit.disabled=false;submit.textContent='Отправить задачу →';
-});
-
-document.getElementById('againBtn').addEventListener('click',()=>{
-  form.reset();
-  form.classList.remove('sent');
-  ['f-name','f-contact','f-message'].forEach(clear);
-  document.getElementById('f-consent').classList.remove('invalid');
-  note('');
-  applyMethod(false);
-  nameInput.focus();
-});
 </script>
 </body>
 </html>

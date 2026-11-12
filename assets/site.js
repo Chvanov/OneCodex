@@ -1,5 +1,10 @@
 /* ONECODEX — общие скрипты всех страниц */
 (function(){
+  // === Настройка внешнего приёмника заявок ===
+  // LEAD_ENDPOINT — URL серверного обработчика заявок (например, Formspree, Cloudflare Worker).
+  // Если пустой или недоступен, будет использоваться фолбэк: Telegram и mailto.
+  const LEAD_ENDPOINT = '';
+
   var YM=112188634;
   function goal(name){ if(typeof ym==='function') ym(YM,'reachGoal',name); }
 
@@ -113,5 +118,216 @@
   document.querySelectorAll('a[href*="t.me/"]').forEach(function(a){a.addEventListener('click',function(){goal('telegram_click');});});
   document.querySelectorAll('a[href^="service-"]').forEach(function(a){a.addEventListener('click',function(){goal('service_click');});});
   document.querySelectorAll('a[href^="case-"]').forEach(function(a){a.addEventListener('click',function(){goal('case_click');});});
+  document.querySelectorAll('.case-live').forEach(function(a){a.addEventListener('click',function(){goal('case_live_click');});});
+
+  /* ---------- Отправка заявки из формы ---------- */
+  function getUtmParams() {
+    const params = {};
+    const query = window.location.search.substring(1);
+    query.split('&').forEach(function(pair) {
+      const [k, v] = pair.split('=');
+      if (k) params[decodeURIComponent(k)] = decodeURIComponent(v || '');
+    });
+    return params;
+  }
+
+  function buildLeadText(form) {
+    const name = (form.querySelector('#name') || {}).value || '';
+    const method = (form.querySelector('input[name="contact_method"]:checked') || {}).value || 'telegram';
+    const contact = (form.querySelector('#contact-value') || {}).value || '';
+    const message = (form.querySelector('#message') || {}).value || '';
+    const page = window.location.href;
+    const utm = getUtmParams();
+
+    let lines = [
+      'Новая заявка с сайта onecodex.ru',
+      '',
+      'Имя/компания: ' + name,
+      'Способ связи: ' + (method === 'telegram' ? 'Telegram' : method === 'email' ? 'Email' : 'Телефон'),
+      'Контакт: ' + contact,
+      '',
+      'Задача: ' + message,
+      '',
+      'Страница: ' + page
+    ];
+    if (utm.utm_source) lines.push('utm_source: ' + utm.utm_source);
+    if (utm.utm_medium) lines.push('utm_medium: ' + utm.utm_medium);
+    if (utm.utm_campaign) lines.push('utm_campaign: ' + utm.utm_campaign);
+    if (utm.utm_term) lines.push('utm_term: ' + utm.utm_term);
+    if (utm.utm_content) lines.push('utm_content: ' + utm.utm_content);
+
+    return lines.join('\n');
+  }
+
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function(resolve, reject) {
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.focus();
+      try {
+        document.execCommand('copy');
+        resolve();
+      } catch (err) {
+        reject(err);
+      } finally {
+        document.body.removeChild(area);
+      }
+    });
+  }
+
+  function openTelegramFallback(text) {
+    const url = 'https://t.me/chvanov_ivan?text=' + encodeURIComponent(text);
+    window.open(url, '_blank');
+    return true;
+  }
+
+  function openMailtoFallback(text) {
+    const subject = encodeURIComponent('Новая заявка с сайта OneCodex');
+    const body = encodeURIComponent(text);
+    const url = 'mailto:hello@onecodex.ru?subject=' + subject + '&body=' + body;
+    window.open(url, '_blank');
+    return true;
+  }
+
+  function showFallbackBlock(form, text) {
+    const formBody = form.querySelector('.form-body');
+    const formSuccess = form.querySelector('.form-success');
+    if (!formBody || !formSuccess) return;
+
+    const fallbackHtml =
+      '<div class="fallback-block" style="padding:20px;background:#f5f5f7;border-radius:16px;margin-top:16px">' +
+      '  <p style="margin:0 0 12px;font-size:16px">Не удалось отправить через сервер. Воспользуйтесь фолбэком:</p>' +
+      '  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">' +
+      '    <a id="mailtoLink" href="#" style="color:var(--link);font-weight:500;text-decoration:underline" target="_blank" rel="noopener">Открыть почту: hello@onecodex.ru ↗</a>' +
+      '    <button type="button" id="copyBtn" style="padding:8px 14px;border-radius:999px;border:1px solid var(--accent);background:transparent;color:var(--link);font-size:14px">Скопировать текст</button>' +
+      '  </div>' +
+      '  <p style="margin-top:12px;font-size:13px;color:var(--muted);line-height:1.4">' +
+      '    Или создайте заявку самостоятельно:' +
+      '  </p>' +
+      '  <p style="margin:6px 0 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--text);white-space:pre-wrap;background:#fff;padding:10px 12px;border-radius:10px;border:1px solid var(--line2);max-height:160px;overflow:auto">' +
+      '    ' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+      '  </p>' +
+      '</div>';
+
+    const fallbackDiv = document.createElement('div');
+    fallbackDiv.innerHTML = fallbackHtml;
+    const fallbackBlock = fallbackDiv.firstElementChild;
+
+    // Подготовим ссылку mailto
+    const mailtoLink = fallbackBlock.querySelector('#mailtoLink');
+    const subject = 'Новая заявка с сайта OneCodex';
+    const bodyText = encodeURIComponent(text);
+    mailtoLink.href = 'mailto:hello@onecodex.ru?subject=' + subject + '&body=' + bodyText;
+
+    // Обработчик копирования
+    fallbackBlock.querySelector('#copyBtn').addEventListener('click', function () {
+      copyTextToClipboard(text).then(function () {
+        const btn = this;
+        const oldText = btn.textContent;
+        btn.textContent = 'Скопировано!';
+        setTimeout(function () { btn.textContent = oldText; }, 1500);
+      }.bind(this));
+    });
+
+    formBody.appendChild(fallbackBlock);
+    fallbackBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function processFormSubmission(form, status, submitBtn) {
+    const checks = [
+      validateName(true, true),
+      validateContact(true, true),
+      validateMessage(true, true),
+      validateConsent(true)
+    ];
+
+    if (checks.includes(false)) {
+      const bad = form.querySelector('.field.invalid input, .field.invalid textarea') || form.querySelector('#consent');
+      if (bad) {
+        bad.focus({ preventScroll: true });
+        bad.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Отправить задачу →';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправляем…';
+
+    let openedChannel = false;
+
+    if (LEAD_ENDPOINT && LEAD_ENDPOINT.trim()) {
+      const data = {
+        name: form.querySelector('#name').value.trim(),
+        contact_method: form.querySelector('input[name="contact_method"]:checked').value,
+        contact: form.querySelector('#contact-value').value.trim(),
+        message: form.querySelector('#message').value.trim(),
+        page: location.href
+      };
+      const utm = getUtmParams();
+      if (Object.keys(utm).length) data.utm = utm;
+
+      fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (r) {
+        if (r.ok) {
+          return r.json();
+        }
+        throw new Error('not ok');
+      }).then(function (j) {
+        if (j && j.ok) {
+          openedChannel = true;
+          form.classList.add('sent');
+          form.querySelector('.form-success').scrollIntoView({ block: 'center', behavior: 'smooth' });
+          if (typeof ym === 'function') ym(YM, 'reachGoal', 'form_submit');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Отправить задачу →';
+          return;
+        }
+        throw new Error('server error');
+      }).catch(function () {
+        // Сетевая ошибка или ответ с ошибкой — переходим к фолбэку
+        handleFallback(form, status, submitBtn);
+      });
+    } else {
+      handleFallback(form, status, submitBtn);
+    }
+
+    function handleFallback(form, status, submitBtn) {
+      const text = buildLeadText(form);
+      const telegramOpened = openTelegramFallback(text);
+      const mailtoOpened = openMailtoFallback(text);
+
+      if (telegramOpened || mailtoOpened) {
+        openedChannel = true;
+        showFallbackBlock(form, text);
+      }
+
+      // Спойлер: если ни один канал не открылся, не показываем «отправлено», не отправляем reachGoal
+      if (!openedChannel) {
+        status.textContent = 'Не удалось открыть ни один канал связи. Пожалуйста, попробуйте позже или напишите напрямую.';
+        status.classList.add('show', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить задачу →';
+        return;
+      }
+
+      form.classList.add('sent');
+      form.querySelector('.form-success').scrollIntoView({ block: 'center', behavior: 'smooth' });
+      if (typeof ym === 'function') ym(YM, 'reachGoal', 'form_submit');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Отправить задачу →';
+    }
+  }
+
   document.querySelectorAll('.case-live').forEach(function(a){a.addEventListener('click',function(){goal('case_live_click');});});
 })();
