@@ -477,11 +477,66 @@ contact.addEventListener('input',()=>{
 });
 document.getElementById('consent').addEventListener('change',()=>validateConsent(true));
 
+/* ---------- Fallback блок для формы ---------- */
+function createFallbackBlock(){
+  const fb=document.createElement('div');
+  fb.className='form-fallback show';
+  fb.innerHTML='<h4>Не удалось отправить заявку автоматически</h4><p>Попробуйте отправить её нам другим способом:</p><div class="fb-links"><a class="fb-mailto" href="#" target="_blank">✉️ Отправить заявку на email</a><button type="button" class="fb-btn-copy">📋 Скопировать заявку</button><a class="fb-telegram" href="https://t.me/chvanov_ivan" target="_blank" rel="noopener">Telegram ↗</a></div><div class="fb-feedback"><span class="fb-copied" style="display:none">✔ Скопировано</span></div></div>';
+  const copyBtn=fb.querySelector('.fb-btn-copy');
+  const mailto=fb.querySelector('.fb-mailto');
+  const feedback=fb.querySelector('.fb-copied');
+  const getBody=()=>{
+    const m=METHODS[method()];
+    const contactValue=contact.value.trim();
+    const contactText=m==='phone'?formatPhone(contactValue):contactValue;
+    const msg=msgInput.value.trim();
+    const nameVal=nameInput.value.trim();
+    return `Заявка с onecodex.ru
+Имя/компания: ${nameVal}
+Способ связи: ${m.label}
+Контакт: ${contactText}
+Задача: ${msg}
+Согласие на обработку: Да
+Страница: ${location.href}`;
+  };
+  mailto.href='mailto:hello@onecodex.ru?subject='+encodeURIComponent('Заявка с onecodex.ru')+'&body='+encodeURIComponent(getBody());
+  copyBtn.addEventListener('click',async ()=>{
+    const text=getBody();
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(text);
+      }else{
+        const ta=document.createElement('textarea');
+        ta.value=text;
+        ta.style.cssText='position:fixed;opacity:0;pointer-events:none';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      feedback.style.display='inline';
+      setTimeout(()=>{feedback.style.display='none';},1500);
+    }catch(_){}
+  });
+  return fb;
+}
+
+function isFallbackBlockExists(){
+  return !!form.querySelector('.form-fallback');
+}
+
 /* ---------- Отправка ---------- */
 function note(msg,isError){
   status.textContent=msg;
   status.classList.toggle('error',!!isError);
   status.classList.toggle('show',!!msg);
+}
+
+function isNetworkError(err){
+  if(!err) return false;
+  if(err.name==='AbortError') return true;
+  if(err.name==='TypeError' && err.message) return /fetch|network|Failed to fetch/i.test(err.message);
+  return false;
 }
 
 form.addEventListener('submit',async e=>{
@@ -492,15 +547,21 @@ form.addEventListener('submit',async e=>{
    if(bad){bad.focus({preventScroll:true});bad.scrollIntoView({block:'center',behavior:'smooth'});}
    return;
  }
+ // Если fallback уже показан, не отправлять повторно
+ if(isFallbackBlockExists()){
+   return;
+ }
  submit.disabled=true;submit.textContent='Отправляем…';
  try{
+   const controller=new AbortController();
+   const timeoutId=setTimeout(()=>controller.abort(),8000);
    const data=new FormData(form);
    data.append('page',location.href);
-   const r=await fetch('send.php',{method:'POST',body:data});
+   const r=await fetch('send.php',{method:'POST',body:data,signal:controller.signal});
+   clearTimeout(timeoutId);
    let j={}; try{ j=await r.json() }catch(_){}
    if(!r.ok||!j.ok){
      const e=new Error('server');
-     // 4xx — это ответ сервера о данных формы, его текст показываем как есть
      if(r.status>=400&&r.status<500&&j.error) e.userMessage=j.error;
      throw e;
    }
@@ -508,13 +569,24 @@ form.addEventListener('submit',async e=>{
    form.querySelector('.form-success').scrollIntoView({block:'center',behavior:'smooth'});
    if (typeof ym === 'function') ym(112188634, 'reachGoal', 'form_submit');
  }catch(err){
-   if(err&&err.userMessage){
-     note(err.userMessage,true);
+   if(isNetworkError(err) || (err && 'status' in err && err.status >= 500) || (!('userMessage' in err) && err.name === 'Error' && 'status' in err && err.status >= 400)){
+     // Показать fallback
+     if(!isFallbackBlockExists()){
+       const fb=createFallbackBlock();
+       status.textContent='';
+       status.classList.remove('error','show');
+       form.appendChild(fb);
+       if (typeof ym === 'function') ym(112188634, 'reachGoal', 'form_fallback');
+     }
    }else{
-     note('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в Telegram: ',true);
-     const a=document.createElement('a');
-     a.href='https://t.me/chvanov_ivan';a.target='_blank';a.rel='noopener';a.textContent='@chvanov_ivan';
-     status.appendChild(a);
+     if(err&&err.userMessage){
+       note(err.userMessage,true);
+     }else{
+       note('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в Telegram: ',true);
+       const a=document.createElement('a');
+       a.href='https://t.me/chvanov_ivan';a.target='_blank';a.rel='noopener';a.textContent='@chvanov_ivan';
+       status.appendChild(a);
+     }
    }
  }
  submit.disabled=false;submit.textContent='Отправить задачу →';
@@ -527,6 +599,9 @@ document.getElementById('againBtn').addEventListener('click',()=>{
   document.getElementById('f-consent').classList.remove('invalid');
   note('');
   applyMethod(false);
+  // Удалить fallback-блок, если он есть
+  const fb=form.querySelector('.form-fallback');
+  if(fb) fb.remove();
   nameInput.focus();
 });
 </script>
