@@ -1,3 +1,10 @@
+# Перенаправление http → https. Sprinthost: перед Apache стоит прокси (openresty),
+# поэтому смотрим и X-Forwarded-Proto, иначе будет бесконечное перенаправление.
+RewriteEngine On
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 # Не отдавать браузеру файлы с секретами и настройками (.env, *.ini и т. п.)
 <FilesMatch "(^\.env.*|\.ini$|\.log$)">
     Require all denied
