@@ -562,14 +562,17 @@ form.addEventListener('submit',async e=>{
    let j={}; try{ j=await r.json() }catch(_){}
    if(!r.ok||!j.ok){
      const e=new Error('server');
+     e.status=r.status;
      if(r.status>=400&&r.status<500&&j.error) e.userMessage=j.error;
+     console.warn('form-submit-error', { status: r.status, ok: j.ok, error: j.error });
      throw e;
    }
    form.classList.add('sent');
    form.querySelector('.form-success').scrollIntoView({block:'center',behavior:'smooth'});
-   if (typeof ym === 'function') ym(112188634, 'reachGoal', 'form_submit');
+   if (typeof ym === 'function') ym(112188634, 'reachGoal', 'lead_form_success');
  }catch(err){
    if(isNetworkError(err) || (err && 'status' in err && err.status >= 500) || (!('userMessage' in err) && err.name === 'Error' && 'status' in err && err.status >= 400)){
+     console.warn('form-submit-network-or-server-error', err.message, { status: err.status });
      // Показать fallback
      if(!isFallbackBlockExists()){
        const fb=createFallbackBlock();
@@ -580,8 +583,10 @@ form.addEventListener('submit',async e=>{
      }
    }else{
      if(err&&err.userMessage){
+       console.warn('form-submit-user-error', err.userMessage);
        note(err.userMessage,true);
      }else{
+       console.warn('form-submit-unknown-error', err);
        note('Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в Telegram: ',true);
        const a=document.createElement('a');
        a.href='https://t.me/chvanov_ivan';a.target='_blank';a.rel='noopener';a.textContent='@chvanov_ivan';
