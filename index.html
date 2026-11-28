@@ -567,7 +567,7 @@ form.addEventListener('submit',async e=>{
    }
    form.classList.add('sent');
    form.querySelector('.form-success').scrollIntoView({block:'center',behavior:'smooth'});
-   if (typeof ym === 'function') ym(112188634, 'reachGoal', 'form_submit');
+   if (typeof ym === 'function') ym(112188634, 'reachGoal', 'lead_form_success');
  }catch(err){
    if(isNetworkError(err) || (err && 'status' in err && err.status >= 500) || (!('userMessage' in err) && err.name === 'Error' && 'status' in err && err.status >= 400)){
      // Показать fallback
